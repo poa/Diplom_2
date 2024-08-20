@@ -1,0 +1,9 @@
+[project]
+requires-python = ">= 3.11"
+
+[tool.black]
+line-length = 100
+
+[tool.pytest.ini_options]
+disable_test_id_escaping_and_forfeit_all_rights_to_community_support = true
+
