@@ -1,3 +1,4 @@
+import allure
 import pytest
 from http import HTTPStatus as HS
 
@@ -6,6 +7,7 @@ from const import ErrorMessages as EM
 
 
 class TestAuthRegister:
+    @allure.title("Register user with correct auth data")
     def test_register_complete_data_successful(self, test_data):
         with AuthAPI(**test_data.auth.complete) as user:
             user.register()
@@ -13,6 +15,7 @@ class TestAuthRegister:
 
     @pytest.mark.parametrize("auth_params", ["no_email", "no_password", "no_name"])
     def test_register_incomplete_data_unsuccessful(self, test_data, auth_params):
+        allure.dynamic.title(f"Register user with incorrect auth data: {auth_params}")
         auth_data = getattr(test_data.auth, auth_params)
         with AuthAPI(**auth_data) as user:
             user.register()
@@ -22,6 +25,7 @@ class TestAuthRegister:
                 and user.last_json.get("message") == EM.AUTH_DATA_INCOMPLETE
             )
 
+    @allure.title("Register user with existing user email)")
     def test_register_existing_user_unsuccessful(
         self, test_data, test_user_unauthorized
     ):
@@ -35,6 +39,7 @@ class TestAuthRegister:
 
 
 class TestAuthLogin:
+    @allure.title("Login user with correct auth data")
     def test_login_correct_data_successful(self, test_user_unauthorized):
         test_user_unauthorized.login()
         assert (
@@ -44,11 +49,12 @@ class TestAuthLogin:
         )
 
     @pytest.mark.parametrize(
-        "wrong_attr",
+        "auth_params",
         [{"email": "new_email_123@test.host"}, {"password": "1qaz.2wsx.3edc"}],
     )
-    def test_login_wrong_data_unsuccessful(self, test_user_unauthorized, wrong_attr):
-        test_user_unauthorized.login(**wrong_attr)
+    def test_login_wrong_data_unsuccessful(self, test_user_unauthorized, auth_params):
+        allure.dynamic.title(f"Login user with incorrect auth data: {auth_params}")
+        test_user_unauthorized.login(**auth_params)
         assert (
             test_user_unauthorized.last_status == HS.UNAUTHORIZED
             and test_user_unauthorized.last_json.get("success") is False
@@ -62,6 +68,7 @@ class TestAuthUpdate:
         [{"email": "new_email_123@test.host"}, {"name": "new_user_name"}],
     )
     def test_update_authorized_successful(self, test_data, updated_attr):
+        allure.dynamic.title(f"Update user data (user is authorized): {updated_attr}")
         with AuthAPI(**test_data.auth.complete) as user:
             user.register()
             user.login()
@@ -82,6 +89,7 @@ class TestAuthUpdate:
     def test_update_unauthorized_unsuccessful(
         self, test_user_unauthorized, updated_attr
     ):
+        allure.dynamic.title(f"Update user data (user is unauthorized): {updated_attr}")
         test_user_unauthorized.update(**updated_attr)
         assert (
             test_user_unauthorized.last_status == HS.UNAUTHORIZED

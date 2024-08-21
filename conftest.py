@@ -31,6 +31,6 @@ def test_user_unauthorized(test_user):
 
 
 @pytest.fixture(scope="function", params=["authorized", "unauthorized"])
-def user_for_order(test_data, request):
+def user_for_order(request, test_data):
     fixture = request.getfixturevalue(f"test_user_{request.param}")
     yield fixture

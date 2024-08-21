@@ -1,7 +1,5 @@
+import allure
 import requests
-
-from http import HTTPMethod as HM, HTTPStatus as HS
-
 
 from const import (
     API_URI,
@@ -11,6 +9,7 @@ from const import (
 
 class OrdersAPI:
     @staticmethod
+    @allure.step("Make order")
     def make(ingredients=None):
         if ingredients is None:
             ingredients = []
@@ -21,7 +20,8 @@ class OrdersAPI:
         return resp
 
     @staticmethod
-    def get_user_orders(access_token):
+    @allure.step("Get user orders")
+    def get_user_orders(access_token=""):
         api_url = API_URI + EP.ORDERS
         headers = {"Authorization": f"{access_token}"}
 

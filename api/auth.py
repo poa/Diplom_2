@@ -1,3 +1,4 @@
+import allure
 import requests
 
 from http import HTTPMethod as HM, HTTPStatus as HS
@@ -28,7 +29,6 @@ class AuthAPI:
         return self
 
     def __exit__(self, *args):
-        # self.delete()
         print(
             f" :: On exit delete status for user {self.email}: {self.delete()}: {self.last_json.get("message")}"
         )
@@ -48,6 +48,7 @@ class AuthAPI:
 
         return resp
 
+    @allure.step("Register user")
     def register(self):
         payload = {
             "email": self.email if self.email is not None else "",
@@ -64,6 +65,7 @@ class AuthAPI:
 
         return self.is_registered
 
+    @allure.step("Login user")
     def login(self, email=None, password=None):
         if self.is_registered:
             payload = {
@@ -80,6 +82,7 @@ class AuthAPI:
 
         return self.is_logged_in
 
+    @allure.step("Logout user")
     def logout(self):
         if self.refresh_token is not None:
             payload = {"token": self.refresh_token}
@@ -93,6 +96,7 @@ class AuthAPI:
 
         return False
 
+    @allure.step("Delete user")
     def delete(self):
         if self.is_registered:
             self.login()
@@ -106,6 +110,7 @@ class AuthAPI:
 
         return False
 
+    @allure.step("Update user data")
     def update(self, email=None, name=None):
         if self.is_registered:
             headers = {"Authorization": f"{self.access_token}"}
