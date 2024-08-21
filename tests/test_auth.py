@@ -61,16 +61,19 @@ class TestAuthUpdate:
         "updated_attr",
         [{"email": "new_email_123@test.host"}, {"name": "new_user_name"}],
     )
-    def test_update_authorized_successful(self, test_user_authorized, updated_attr):
-        test_user_authorized.update(**updated_attr)
-        returned_attr_value = test_user_authorized.last_json.get("user").get(
-            str(*updated_attr.keys())
-        )
-        assert (
-            test_user_authorized.last_status == HS.OK
-            and test_user_authorized.last_json.get("success") is True
-            and returned_attr_value == str(*updated_attr.values())
-        )
+    def test_update_authorized_successful(self, test_data, updated_attr):
+        with AuthAPI(**test_data.auth.complete) as user:
+            user.register()
+            user.login()
+            user.update(**updated_attr)
+            returned_attr_value = user.last_json.get("user").get(
+                str(*updated_attr.keys())
+            )
+            assert (
+                user.last_status == HS.OK
+                and user.last_json.get("success") is True
+                and returned_attr_value == str(*updated_attr.values())
+            )
 
     @pytest.mark.parametrize(
         "updated_attr",

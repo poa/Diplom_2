@@ -23,26 +23,13 @@ class AuthData:
 
 class OrderData:
     def __init__(self):
-        data = DataGenerator()
-
-        complete_set_base = [
-            data.first_name,
-            data.last_name,
-            data.address,
-            data.metro_station,
-            data.phone,
-            data.rent_period_int,
-            data.date,
-            data.comment,
-        ]
-
-        self.complete_set_no_color = complete_set_base + [None]
-        self.complete_set_black_color = complete_set_base + [TC.SCOOTER_COLORS[0]]
-        self.complete_set_grey_color = complete_set_base + [TC.SCOOTER_COLORS[1]]
-        self.complete_set_both_color = complete_set_base + [TC.SCOOTER_COLORS]
+        self.no_ingredients = []
+        self.correct_ingredients = TC.CORRECT_INGREDIENTS
+        self.incorrect_ingredients = ["000000000000000000000001"]
+        self.bad_hash_ingredients = TC.CORRECT_INGREDIENTS + ["abc123"]
 
 
 class TestData:
     def __init__(self):
         self.auth = AuthData()
-        # self.order = OrderData()
+        self.order = OrderData()
