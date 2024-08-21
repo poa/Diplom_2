@@ -1,0 +1,1 @@
+ :: On exit delete status for user egorovavera@example.org: True: User successfully removed
