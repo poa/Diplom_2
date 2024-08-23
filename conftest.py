@@ -1,8 +1,7 @@
 import pytest
 
-from data import TestData
-
 from api.auth import AuthAPI
+from data import TestData
 
 
 @pytest.fixture(scope="session")
