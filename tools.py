@@ -1,5 +1,4 @@
 from faker import Faker
-from unidecode import unidecode as translit
 
 
 class DataGenerator:
