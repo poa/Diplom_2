@@ -1,0 +1,1 @@
+ :: On exit delete status for user egorovavera@example.org: False: Email, password and name are required fields

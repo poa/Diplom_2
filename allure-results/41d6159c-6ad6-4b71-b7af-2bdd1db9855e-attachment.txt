@@ -1,0 +1,1 @@
+ :: On exit delete status for user new_email_123@test.host: True: User successfully removed
